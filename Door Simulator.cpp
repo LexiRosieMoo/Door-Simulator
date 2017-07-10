@@ -51,17 +51,13 @@ int main()
 	//system("COLOR F0");
 
 	int gamestyle = 0;
-	int timesbeaten = 0;
 	bool gamebeaten = false;
-	
-	string subtitle = "A tale of one door";
+	string subtitle = "A Tale of One Door";
 	
 	do
 	{
 
 		//variables and such
-		
-		//bool look = true;//A silly way to undestand the look command
 		bool left = false;//knob direction **BAD**
 		bool right = false;//knob direction **BAD**
 		bool firmness = false; //is the command firm
@@ -69,17 +65,16 @@ int main()
 		bool sword = false; //is the player holding a sword
 		bool iceproof = false; //is the player iceproof
 		bool open = false; //true if door is open **What?**
-		
+		bool lights = true; //true = on, false = off
+
 		int turnstaken = 0;//Turns taken
 		int handstate = 0;//The state of the player's hand
 		int direction = 0;//Direction the player is looking, 0 is at the door and all other directions are clockwise relative to this
-		string dummy;
-		string DoorState = "The door is currently in the factory default 'closed' condition";
-		string Floorstate = "The floor is cold and unforgiving, \nholding battlescars from the many who have walked across it.";
-
-		string LookAtValue = "You are in a small room, there is a door in front of you.\nThe door is a standard 'push to open' model featuring a rotatable knob.\nThere is a light above you though no apparent way to turn it on or off.\n";
 		
-		string status = "You are a sturdy creature fond of drink and industry.";
+		
+		
+		string dummy;
+		
 		
 		/*
 		-1 - hand is on door but not on the knob
@@ -89,30 +84,18 @@ int main()
 		3 - hand has turned door knob
 		*/
 		
-		cout<<"Welcome to the Door game: "<<subtitle<<"!\n\n"
-			<<"This is a tale of liches and kings,\n"
-			<<"riches and ruins\n"
-			<<"a man and a door.\n\n"
-			<<"The very door that would try his sanity,\n"
-			<<"the very door that would try his spirit,\n"
-			<<"the very door that would break all that he belived to be true.\n\n"
-			<<"This game is the story, of the quest to open a door.\n\n"
-			<<"If you need help on what to do, the HELP command works quite nicely!\n\n"
-			<<"'>>' prompts a keypress to continue text\n\n";
-
+		opening(subtitle);
+		
 		ofstream fout;
-		
-		
+			
 		if (logging)
 		{
 			fout.open("Log.txt", ios::app);
 		}
-
-		
+	
 		if(gamestyle == 1)
 		{
 			NGPlus();
-			//cout<<"THE NEW GAME PLUS IS VERY IN DEV AT THIS POINT SO \nTHE GAME MAY OR MAY NOT LIKE YOU DOING STUFF.\n";
 		}
 		
 		
@@ -130,38 +113,22 @@ int main()
 				cout<<endl;*/
 			firmness = false;
 			
-			userinput = prompt();
-			//Firmness
+			userInput = prompt();
 			
-			//Remove This Later
-			/*
-			if (userinput.find("badscene") <1000 )
+			if (wordCheckB("tight")||wordCheckB("firm")||wordCheckB("force"))
 			{
-				newgameplus(false);
+				firmness = true;
 			}
-			
-			if (userinput.find("scene") <1000 )
-			{
-				newgameplus(true);
-			}
-			
-			*/
-			
-			
-			if (wordcheckb("tight")||wordcheckb("firm")||wordcheckb("force"))
-				{
-					firmness = true;
-				}
 			
 			//One Word Commands
 			
 			
 			
-			if (wordcheckb("condition") || wordcheckb("status"))
+			if (wordCheckB("condition") || wordCheckB("status"))
 			{
 				cout<<status<<endl;
 			}
-			else if (wordcheckb("inventory"))
+			else if (wordCheckB("inventory"))
 			{
 				if (sword == true)
 				{
@@ -174,26 +141,26 @@ int main()
 				
 			}
 			//looking at the door
-			else if (wordorder("look", "door"))
+			else if (wordOrder("look", "door"))
 			{
 				
 				cout<<DoorState<<endl;
 			}
 			//Looking at the floor
-			else if (wordorder("look", "floor"))
+			else if (wordOrder("look", "floor"))
 			{
 				cout<<Floorstate<<endl;
 			}
-			else if (wordcheckb("look"))
+			else if (wordCheckB("look"))
 			{
 				cout<<LookAtValue<<endl;
-				//cout<<userinput.find("knob");
+				//cout<<userInput.find("knob");
 			}
 			
 			
 			//KILL THE LICH
 			
-			else if (userinput == "killthelich")
+			else if (userInput == "killthelich")
 			{
 				
 				cout<<"You feel a chill go through your body, as if some terrible evil is upon you.\n";
@@ -201,28 +168,28 @@ int main()
 				gamestyle = 1;
 			}
 			
-			else if (wordorder("kick", "door"))
+			else if (wordOrder("kick", "door"))
 			{
 				cout<<"You kick the door with all of your might!\nOuch!";
 				cout<<"Your foot is now in pain.";
-				status+="Your foot is in pain\n";
+				status = "Your foot is in pain\n"+status;
 			}
 			
-			else if (wordorder("kill", "lich"))
+			else if (wordOrder("kill", "lich"))
 			{
 				cout<<"Now why would you want to do something like that?\n";
 			}
 			
 			//get that sword
 			
-			else if ((wordcheckb("pick")|| (wordcheckb("get")) || (wordcheckb("take")) || (wordcheckb("grab"))) && ((wordcheckb("sword")) || wordcheckb("hilt")))
+			else if ((wordCheckB("pick")|| (wordCheckB("get")) || (wordCheckB("take")) || (wordCheckB("grab"))) && ((wordCheckB("sword")) || wordCheckB("hilt")))
 			{
-				if ((wordcheckb("sword")))
+				if ((wordCheckB("sword")))
 				{
 					if (gamestyle == 1)
 					{
 				
-						if ((wordcheckb("handle")) || (wordcheckb("hilt")))
+						if ((wordCheckB("handle")) || (wordCheckB("hilt")))
 						{
 							if (sword == false)
 							{
@@ -243,16 +210,21 @@ int main()
 					{
 						cout<<"What sword?\nYou must be crazy or something to think theres a sword in this room.\n";
 					}
+				
+				}
+				else
+				{
+					cout<<"Grab the hilt of what?\n";
 				}
 			}
-			else if (wordcheckb("timetoslam"))
+			else if (wordCheckB("timetoslam"))
 			{
 				if (iceproof == false)
 				{
 					if (gamestyle == 0)
 					{
 						cout<<"Barkley's words echo in your head...\n";
-						stringout("Theres a time and a place for everything, 111but not now.\n");
+						stringOut("Theres a time and a place for everything, 111but not now.\n");
 					}
 					else
 					{
@@ -276,7 +248,7 @@ int main()
 						cout<<"Charles looks to you and forms a new ball in his hands from the\n"
 							<<"spectral winds of the twister.  He then yells\n";
 						keyp();
-						stringout("\t'SPECTRAL SLAM OF ICE PROTECTION'\n");
+						stringOut("\t'SPECTRAL SLAM OF ICE PROTECTION'\n");
 						keyp();
 						cout<<"and in a magnificent display of wind and lightning,\n"
 							<<"Charles slams the ball through your head and you feel the magic fill your body.\n"
@@ -289,7 +261,7 @@ int main()
 				else
 				{
 					cout<<"Barkly's words echo in your head-\n";
-					stringout("\t'There is a time and place for everything\n \tbut not now.'\n");
+					stringOut("\t'There is a time and place for everything\n \tbut not now.'\n");
 				}
 			
 			
@@ -297,9 +269,9 @@ int main()
 			}
 			
 			
-			else if (wordcheckb("read"))
+			else if (wordCheckB("read"))
 			{
-				if (wordcheckb("inscription") || (wordcheckb("wall")) || (wordcheckb("words")))
+				if (wordCheckB("inscription") || (wordCheckB("wall")) || (wordCheckB("words")))
 				{
 					if (gamestyle == 1)
 					{
@@ -308,7 +280,7 @@ int main()
 						
 						string inscription = "1111111111\tTo best 111t111he Li11111c111111h is a 11111chal111lenge\n\tthats 111im111111p111o1111s1111si111111b1111111le wi111111t111111h1111111111out some ma11111gi111111c.\n\tRe1111ci1111te the p11111h1111rase 11111T111111I11111M1111E111111T11111111O1111111111S1111L11111A11111111M\n\tor y1111o111u1111r end will be 11111tra111111g111ic\n";
 						
-						stringout(inscription);
+						stringOut(inscription);
 					
 						
 					}
@@ -324,7 +296,7 @@ int main()
 				
 			}
 			
-			else if (wordcheckb("search"))
+			else if (wordCheckB("search"))
 			{
 				if (gamestyle == 0)
 				{
@@ -343,7 +315,7 @@ int main()
 				}
 			}
 			
-			else if ((wordorder("open", "door")) || (wordorder("pull", "handle")))
+			else if ((wordOrder("open", "door")) || (wordOrder("pull", "handle")))
 			{
 				switch(handstate)
 				{
@@ -395,37 +367,34 @@ int main()
 			
 			//Help
 			
-			else if (wordcheckb("help"))
+			else if (wordCheckB("help"))
 			{
 				help();
 			}
-			else if ((wordcheckb("dance")) || (wordcheckb("jig")))
+			else if ((wordCheckB("dance")) || (wordCheckB("jig")))
 			{
 				cout<<"You attempt to do a small dance of sorts but there isn't enough room.\n";
 			}
 			
-			else if (userinput.find("score") <1000)
+			else if (userInput.find("score") <1000)
 			{
 				cout<<"Turns taken: "<<turnstaken<<endl
-					<<"Doors opened: "<<timesbeaten<<endl
+					<<"Doors opened: "<<gamestyle<<endl
 					<<"Maidens saved: 0"<<endl
 					<<"Liches killed: 0"<<endl
 					<<"Current alignment: ";
-					if (left == true)
-					{
-						cout<<"Chaotic Evil\n";
-					}
-					else
-					{
-						if (right == true)
-						{
-							cout<<"Lawful Good\n";
-						}
-						else
-						{
-							cout<<"Neutral\n";
-						}
-					}
+				if (left == true)
+				{
+					cout<<"Chaotic Evil\n";
+				}
+				else if (right == true)
+				{
+					cout<<"Lawful Good\n";
+				}
+				else
+				{
+						cout<<"Neutral\n";
+				}
 			
 			}
 			
@@ -436,10 +405,10 @@ int main()
 			//**Walking on Sunshine**
 			//***********************
 			//This is all very bad and needs fixing
-			else if ((userinput.find("step") <1000) || (userinput.find("walk") <1000))
+			else if ((userInput.find("step") <1000) || (userInput.find("walk") <1000))
 			{
 			
-				if ((0<userinput.find("back") && ( userinput.find("back")<1000)))
+				if ((0<userInput.find("back") && ( userInput.find("back")<1000)))
 				{
 				
 					
@@ -487,7 +456,7 @@ int main()
 					
 					
 				}
-				else if ((0<userinput.find("forward") && ( userinput.find("forward")<1000)))
+				else if ((0<userInput.find("forward") && ( userInput.find("forward")<1000)))
 				{
 				
 					switch(direction)
@@ -532,7 +501,7 @@ int main()
 					}
 					
 				}
-				else if (0<userinput.find("left") && ( userinput.find("left")<1000))
+				else if (0<userInput.find("left") && ( userInput.find("left")<1000))
 				{
 				
 					switch(direction)
@@ -577,7 +546,7 @@ int main()
 					}
 					
 				}
-				else if (0<userinput.find("right") && ( userinput.find("right")<1000))
+				else if (0<userInput.find("right") && ( userInput.find("right")<1000))
 				{
 					switch(direction)
 					{
@@ -624,24 +593,24 @@ int main()
 					cout<<"Step where?\n";
 				}
 			}
-			else if (wordcheckb("sing"))
+			else if (wordCheckB("sing"))
 			{
 				cout<<"You begin to sing---\n\n";
 				string song = "Of dangers and dragons and Liches and more1\nthere was never a challenge as fierce as the door.\n\n11Through legends and myth, with many to try,\n1the door was never the one who would die.\n\n11So for those who dare, to challenge its might,\n1just be sure to turn the knob right111\n\nor left.\n";
-				stringout(song);
+				stringOut(song);
 			
 			}
 			//Grabbing
 			
-			else if (((userinput.find("grab") <1000) || (userinput.find("put") <1000) || (userinput.find("place") <1000) || (userinput.find("establish") <1000) || (userinput.find("lay") <1000) || (userinput.find("settle") <1000)|| (userinput.find("establish") <1000) || ((userinput.find("grasp") <1000)) || (userinput.find("hold") <1000)) && !((userinput.find("sword") <1000) || userinput.find("hilt") < 1000))
+			else if (((userInput.find("grab") <1000) || (userInput.find("put") <1000) || (userInput.find("place") <1000) || (userInput.find("establish") <1000) || (userInput.find("lay") <1000) || (userInput.find("settle") <1000)|| (userInput.find("establish") <1000) || ((userInput.find("grasp") <1000)) || (userInput.find("hold") <1000)) && !((userInput.find("sword") <1000) || userInput.find("hilt") < 1000))
 			{
 			
 			
-				if ((0<userinput.find("hand") && ( userinput.find("hand")<1000)) || ((userinput.find("grasp") <1000)) || (userinput.find("hold") <1000) || (userinput.find("grab") <1000))
+				if ((0<userInput.find("hand") && ( userInput.find("hand")<1000)) || ((userInput.find("grasp") <1000)) || (userInput.find("hold") <1000) || (userInput.find("grab") <1000))
 				{
-					if ((userinput.find("hand")<userinput.find("door") || ((userinput.find("grasp") <1000)) || (userinput.find("hold") <1000) && ( userinput.find("door")<1000)) || ( userinput.find("knob")<1000) || ( userinput.find("handle")<1000))
+					if ((userInput.find("hand")<userInput.find("door") || ((userInput.find("grasp") <1000)) || (userInput.find("hold") <1000) && ( userInput.find("door")<1000)) || ( userInput.find("knob")<1000) || ( userInput.find("handle")<1000))
 					{
-						if ( (userinput.find("knob")<1000) || ( userinput.find("handle")<1000)) // old one, mysteriously evaluates to true always(((userinput.find("door") <userinput.find("knob")) &&( userinput.find("knob")<1000)) || ((userinput.find("grasp") <1000) && ( userinput.find("knob")<1000)) || ((userinput.find("hold") <1000) && ( userinput.find("knob")<1000)) || ((userinput.find("door")) <userinput.find("knob")) || (((userinput.find("grasp") <1000)) &&( userinput.find("handle")<1000)) || ((userinput.find("hold") <1000) &&( userinput.find("handle")<1000)))
+						if ( (userInput.find("knob")<1000) || ( userInput.find("handle")<1000)) // old one, mysteriously evaluates to true always(((userInput.find("door") <userInput.find("knob")) &&( userInput.find("knob")<1000)) || ((userInput.find("grasp") <1000) && ( userInput.find("knob")<1000)) || ((userInput.find("hold") <1000) && ( userInput.find("knob")<1000)) || ((userInput.find("door")) <userInput.find("knob")) || (((userInput.find("grasp") <1000)) &&( userInput.find("handle")<1000)) || ((userInput.find("hold") <1000) &&( userInput.find("handle")<1000)))
 						{
 						
 							if (firmness == true)
@@ -706,12 +675,12 @@ int main()
 			
 			//Rotating the door knob
 			
-			else if ((userinput.find("turn") < 1000) || (userinput.find("rotate") < 1000))
+			else if ((userInput.find("turn") < 1000) || (userInput.find("rotate") < 1000))
 			{
 				
-				if (((userinput.find("turn")<userinput.find("knob") && ( userinput.find("knob")<1000)) || (userinput.find("turn")<userinput.find("handle") && ( userinput.find("handle")<1000))) || (userinput.find("rotate")<userinput.find("knob") && ( userinput.find("knob")<1000)) || (userinput.find("rotate")<userinput.find("handle") && ( userinput.find("handle")<1000)))
+				if (((userInput.find("turn")<userInput.find("knob") && ( userInput.find("knob")<1000)) || (userInput.find("turn")<userInput.find("handle") && ( userInput.find("handle")<1000))) || (userInput.find("rotate")<userInput.find("knob") && ( userInput.find("knob")<1000)) || (userInput.find("rotate")<userInput.find("handle") && ( userInput.find("handle")<1000)))
 				{
-					if ((userinput.find("knob")<userinput.find("left") && ( userinput.find("left")<1000)) || (userinput.find("knob")<userinput.find("right") && ( userinput.find("right")<1000)) || (userinput.find("handle")<userinput.find("left") && ( userinput.find("left")<1000)) || (userinput.find("handle")<userinput.find("right") && ( userinput.find("right")<1000)))
+					if ((userInput.find("knob")<userInput.find("left") && ( userInput.find("left")<1000)) || (userInput.find("knob")<userInput.find("right") && ( userInput.find("right")<1000)) || (userInput.find("handle")<userInput.find("left") && ( userInput.find("left")<1000)) || (userInput.find("handle")<userInput.find("right") && ( userInput.find("right")<1000)))
 					{
 					
 						switch(handstate)
@@ -734,11 +703,11 @@ int main()
 								cout<<"You firmly turn the doorknob,\nthe mechanisms within the door make subtle noices of their mastery within.\n";
 								handstate = 3;
 								
-								if (userinput.find("left")<1000)
+								if (userInput.find("left")<1000)
 								{
 									left = true;
 								}
-								else if (userinput.find("right")<1000)
+								else if (userInput.find("right")<1000)
 								{
 									right = true;
 								}
@@ -749,7 +718,7 @@ int main()
 							case(3):
 							{
 									
-								if (userinput.find("left")<1000)
+								if (userInput.find("left")<1000)
 								{
 									if (left == true)
 									{
@@ -765,7 +734,7 @@ int main()
 										
 									}
 								}
-								else if (userinput.find("right")<1000)
+								else if (userInput.find("right")<1000)
 								{
 								
 									if (left == true)
@@ -818,7 +787,7 @@ int main()
 				// **FIX ALL OF THIS DO THIS SOON**
 				// ********************************
 				
-				else if (wordorder("turn", "left"))
+				else if (wordOrder("turn", "left"))
 				{
 					//Spin
 					
@@ -854,7 +823,7 @@ int main()
 						
 					}
 				}
-				else if ((userinput.find("turn")<userinput.find("right")) && userinput.find("right")<1000)
+				else if ((userInput.find("turn")<userInput.find("right")) && userInput.find("right")<1000)
 				{
 					direction += 1;
 					if (direction == 4)
@@ -912,8 +881,8 @@ int main()
 			
 			else
 			{
-			cout<<userinput<<" is not a command I recognize.\n";
-			fout<<userinput<<endl;
+			cout<<userInput<<" is not a command I recognize.\n";
+			fout<<userInput<<endl;
 			}
 			//removeme
 			//cout<<direction<<endl;
@@ -986,8 +955,6 @@ int main()
 				
 				system("PAUSE");
 				
-				timesbeaten++;
-				
 				
 				system("CLS");
 				cout<<"                         A new day brings new adventure,\n"
@@ -995,25 +962,12 @@ int main()
 					<<"                                 rest easy heros\n\n\n\n\n\n";
 				system("PAUSE");
 				system("CLS");
-				cout<<"New game ";
-				for(int q = 0; q<timesbeaten; q++)
-				{
-					cout<<"plus ";
-				}
-				cout<<"unlocked!\n\n";
+				cout<<"New game plus unlocked!\n\n";
 				cout<<"Press any key to begin!";
 				getch();
-				switch(timesbeaten)
-				{
-					case(1):
-					{
-						system("COLOR 0A");
-						subtitle = "Plus";
-						gamestyle = 1;
-						break;
-					}
-				}
-				
+				system("COLOR 0A");
+				subtitle = "Better Game Edition";
+				gamestyle=1;
 				system("CLS");
 				
 		}
@@ -1062,24 +1016,24 @@ bool newgameplus(bool iceoff)
 	system("PAUSE");
 	system("CLS");
 	cout<<"You have one chance before you are frozen, make it count!\n\n";
-	bool thatsallfolks = false;
+	bool NGPend = false;
 	bool FinalAttack = false;
 	do
 	{
 		
-		string userinput = prompt();
+		string userInput = prompt();
 		
-		if ((userinput.find("shut") < 1000 || userinput.find("close")<1000 || userinput.find("slam")<1000) && userinput.find("door")<1000)
+		if ((userInput.find("shut") < 1000 || userInput.find("close")<1000 || userInput.find("slam")<1000) && userInput.find("door")<1000)
 			{
 				cout<<"You slam the door in the Lich's face and see ice cover the entire inner portion of the door\n"
 					<<"The door is no longer usable now that the magical ice has covered it.\n\n";
 				cout<<"Game over\n\n";
 				cout<<"Press any key to door again.\n";
-				thatsallfolks = true;
+				NGPend = true;
 				getch();
 			 
 			}
-		else if ((userinput.find("step")< 1000 ) || (userinput.find("walk")< 1000 ))
+		else if ((userInput.find("step")< 1000 ) || (userInput.find("walk")< 1000 ))
 		{
 			if (iceoff == false)
 			{
@@ -1090,7 +1044,7 @@ bool newgameplus(bool iceoff)
 			cout<<"Game over I guess\n"
 				<<"Press any key to door again\n.";
 			getch();
-			thatsallfolks = true;
+			NGPend = true;
 			
 			}
 			else if (iceoff == true)
@@ -1099,8 +1053,8 @@ bool newgameplus(bool iceoff)
 				cout<<"The Lich looks upon you confused at what you were attempting when suddenly\n"
 					<<"You hear a voice.>>\n";
 					getch();
-				stringout("'Its not the slam in your game\n");
-				stringout("its the slam in your heart'\n");
+				stringOut("'Its not the slam in your game\n");
+				stringOut("its the slam in your heart'\n");
 				cout<<">>\n";
 					getch();
 				cout<<"You begin to thaw but the Lich realizes and quickly stops it using more\n"
@@ -1109,13 +1063,13 @@ bool newgameplus(bool iceoff)
 				cout<<"Game Over\n";
 				cout<<"Press any door to key again\n";
 				getch();
-				thatsallfolks = true;
+				NGPend = true;
 				
 			}
 			
 			
 		}
-		else if (userinput.find("timetoslam") < 1000)
+		else if (userInput.find("timetoslam") < 1000)
 		{
 			if (iceoff == false)
 			{
@@ -1124,7 +1078,7 @@ bool newgameplus(bool iceoff)
 			cout<<"Game Over\n";
 			cout<<"Press any key to try to again the game\n";
 			getch();
-			thatsallfolks = true;
+			NGPend = true;
 			
 			
 			
@@ -1143,18 +1097,18 @@ bool newgameplus(bool iceoff)
 					<<"the Lich's staff.  Charles Barkley shatters it with a\n"
 					<<"ball made of pure Spectral Slam Energy.\n";
 				cout<<"The Lich cries out as his source of energy is destroyed\n";
-				stringout("'You fool!'\n");
+				stringOut("'You fool!'\n");
 				cout<<"he shouts at Charles as he crumbles to the ground.\n"
 					<<"Charles begins to speak\n";
 					//finish this dialog
 			}
 		
 		}
-		else if (userinput.find("swing")< 1000 )
+		else if (userInput.find("swing")< 1000 )
 		{
-			if (userinput.find("sword") < 1000)
+			if (userInput.find("sword") < 1000)
 			{
-				if (userinput.find("lich") < 1000)
+				if (userInput.find("lich") < 1000)
 				{
 					if (FinalAttack == false)
 					{
@@ -1165,7 +1119,7 @@ bool newgameplus(bool iceoff)
 								<<"Game Over.\n"
 								<<"Press any key to try again\n";
 								getch();
-								thatsallfolks = true;
+								NGPend = true;
 						}
 						else
 						{
@@ -1174,8 +1128,8 @@ bool newgameplus(bool iceoff)
 								<<"Just then the ice begins to feel warm as it starts to melt around you.\n"
 								<<"You hear a voice.>>\n";
 							getch();
-							stringout("'Its not the slam in your game\n");
-							stringout("its the slam in your heart'\n");
+							stringOut("'Its not the slam in your game\n");
+							stringOut("its the slam in your heart'\n");
 							cout<<">>\n";
 							getch();
 							cout<<"The Lich is too busy laughing to notice that you are out of the ice\n"
@@ -1194,7 +1148,7 @@ bool newgameplus(bool iceoff)
 							<<"is a screech as the sword slices through him, cutting him in two.\n\n"
 							<<"Press any key to continue\n\n";
 							getch();
-							thatsallfolks = true;
+							NGPend = true;
 							return true;
 					}
 				}
@@ -1208,7 +1162,7 @@ bool newgameplus(bool iceoff)
 					<<"Game Over\n"
 					<<"Press any key to door again.";
 					getch();
-					thatsallfolks= true;
+					NGPend= true;
 				
 				}
 			}
@@ -1221,10 +1175,10 @@ bool newgameplus(bool iceoff)
 				<<"Game Over\n\n"
 				<<"Press any key to door again\n";
 				getch();
-				thatsallfolks = true;
+				NGPend = true;
 		}
 	}
-	while (thatsallfolks==false);
+	while (NGPend==false);
 	system("CLS");
 	
 }

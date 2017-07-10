@@ -1,6 +1,6 @@
 //Minor functions for Door Simulator+ Project
 
-string userinput;
+string userInput;
 
 //Prompts the user for a keypress
 void keyp()
@@ -11,7 +11,7 @@ void keyp()
 }
 
 //Prints out a string, character by character
-void stringout(string text)
+void stringOut(string text)
 { 
 	for(int d = 0; d < text.length(); d++)
 	{
@@ -62,9 +62,9 @@ string prompt()
 }
 
 //Returns if a word is found in the input
-bool wordcheckb(string check)
+bool wordCheckB(string check)
 {
-	if ((userinput.find(check) <1000) || (userinput.find(check) <1000))
+	if ((userInput.find(check) <1000) || (userInput.find(check) <1000))
 	{
 		return true;
 	}
@@ -73,11 +73,11 @@ bool wordcheckb(string check)
 
 
 //Returns the position of a word in the input
-int wordcheckp(string check)
+int wordCheckP(string check)
 {
-	if (wordcheckb(check))
+	if (wordCheckP(check))
 	{
-		return userinput.find(check);
+		return userInput.find(check);
 	}
 	else
 	{
@@ -87,11 +87,11 @@ int wordcheckp(string check)
 }
 
 //Returns true if word a is before word b
-bool wordorder(string a, string b)
+bool wordOrder(string a, string b)
 {
-	if (wordcheckb(a) && wordcheckb(b))
+	if (wordCheckB(a) && wordCheckB(b))
 	{
-		if (wordcheckp(a) < wordcheckp(b))
+		if (wordCheckP(a) < wordCheckP(b))
 		{
 			return true;
 		}
