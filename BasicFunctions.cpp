@@ -75,7 +75,7 @@ bool wordCheckB(string check)
 //Returns the position of a word in the input
 int wordCheckP(string check)
 {
-	if (wordCheckP(check))
+	if (wordCheckB(check))
 	{
 		return userInput.find(check);
 	}
