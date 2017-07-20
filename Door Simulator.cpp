@@ -4,6 +4,9 @@
 //Improved Edition
 //2016
 
+//This game is horribly written and I am sorry
+//Still Making it better, 2017
+
 #include <iostream>
 #include <iomanip>
 #include <string>
@@ -66,7 +69,10 @@ int main()
 		bool iceproof = false; //is the player iceproof
 		bool open = false; //true if door is open **What?**
 		bool lights = true; //true = on, false = off
-
+		//Not important variables
+		bool footpain = false;
+		bool nosebleed = false;
+		
 		int turnstaken = 0;//Turns taken
 		int handstate = 0;//The state of the player's hand
 		int direction = 0;//Direction the player is looking, 0 is at the door and all other directions are clockwise relative to this
@@ -137,6 +143,7 @@ int main()
 				else
 				{
 					cout<<"You have a small song of good feelings.\n";
+					cout<<"You also have a signed copy of 'DOORS AND YOU: A BEGINNER'S GUIDE TO DOOR OPENING'";
 				}
 				
 			}
@@ -170,9 +177,13 @@ int main()
 			
 			else if (wordOrder("kick", "door"))
 			{
-				cout<<"You kick the door with all of your might!\nOuch!";
-				cout<<"Your foot is now in pain.";
-				status = "Your foot is in pain\n"+status;
+				cout<<"You kick the door with all of your might!\nOuch!\n";
+				cout<<"Your foot is now in pain.\n";
+				if (footpain == false)
+				{
+					status = "Your foot is in pain\n"+status;
+					footpain = true;
+				}
 			}
 			
 			else if (wordOrder("kill", "lich"))
@@ -271,7 +282,7 @@ int main()
 			
 			else if (wordCheckB("read"))
 			{
-				if (wordCheckB("inscription") || (wordCheckB("wall")) || (wordCheckB("words")))
+				if (wordCheckB("inscri") || (wordCheckB("wall")) || (wordCheckB("words")))
 				{
 					if (gamestyle == 1)
 					{
@@ -286,12 +297,16 @@ int main()
 					}
 					else
 					{
-						cout<<"Theres nothing to read!\n";
+						cout<<"Read what?\n";
 					}
+				}
+				else if (wordCheckB("book") || wordCheckB("doors and you"))
+				{
+					guide();
 				}
 				else
 				{
-					cout<<"You would read but unfortunately you left your favorite reading material at home.\n";
+					cout<<"Read what?\n";
 				}
 				
 			}
@@ -351,7 +366,11 @@ int main()
 								<<"Your nose is bleeding and whats worse, the door has shut itself.\n";
 							Floorstate = "The floor is cold and unforgiving, \nholding battlescars from the many who have walked across it and\nis now littered with your blood.";
 							handstate = 0;
-							status = "Your nose is bleeding.\n"+status;
+							if (nosebleed == false)
+							{
+								status = "Your nose is bleeding.\n"+status;
+								nosebleed = true;
+							}
 						}
 						else
 						{
@@ -959,7 +978,7 @@ int main()
 				system("CLS");
 				cout<<"                         A new day brings new adventure,\n"
 					<<"                                 but for now...\n\n\n"
-					<<"                                 rest easy heros\n\n\n\n\n\n";
+					<<"                                 rest easy heroes\n\n\n\n\n\n";
 				system("PAUSE");
 				system("CLS");
 				cout<<"New game plus unlocked!\n\n";

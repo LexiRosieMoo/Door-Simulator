@@ -50,7 +50,7 @@ void NGPlus() //Prints the new game plus opening addition
 	cout<<"In this new game plus, you have access to a bunch more commands with\n"
 				<<"a secret ending thrown in there as well.  A good way to start is to\n"
 				<<"figure out what you need to do.  There are new things to see\n"
-				<<"and discoveries to make.  So why not have some fun trying\n"
+				<<"and discoveries to make.  So have some fun trying\n"
 				<<"something new!\n\n"
 				<<"Have fun\n";
 			cout<<"\nYou can always type the phrase KILLTHELICH to access \nthe new game plus from the regular game.\n\n";
